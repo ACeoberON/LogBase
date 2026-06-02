@@ -9,9 +9,6 @@ pgsql/include/
 # 환경 변수 (민감 정보)
 .env
 
-# 컴파일된 실행 파일
-*.exe
-
 # PyInstaller 빌드 산출물
 dist/
 build/
