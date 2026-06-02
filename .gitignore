@@ -28,3 +28,5 @@ __pycache__/
 
 # 기타
 *.log
+*.db
+docker-compose.yml
