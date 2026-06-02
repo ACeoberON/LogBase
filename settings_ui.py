@@ -180,14 +180,19 @@ class LogViewerTab(tk.Frame):
         filter_frame = tk.Frame(self)
         filter_frame.pack(fill=tk.X, padx=15, pady=(15, 5))
 
-        tk.Label(filter_frame, text="🔍 파일명 검색:", font=("맑은 고딕", 9)).pack(side=tk.LEFT)
-        self.search_var = tk.StringVar()
-        tk.Entry(filter_frame, textvariable=self.search_var, width=20, font=("맑은 고딕", 9)).pack(side=tk.LEFT, padx=(5, 15))
+        tk.Label(filter_frame, text="📅 날짜:", font=("맑은 고딕", 9)).pack(side=tk.LEFT)
+        self.date_filter_var = tk.StringVar(value="전체")
+        self.date_filter_combo = ttk.Combobox(filter_frame, textvariable=self.date_filter_var, width=13, state="readonly", font=("맑은 고딕", 9))
+        self.date_filter_combo.pack(side=tk.LEFT, padx=(5, 12))
 
-        tk.Label(filter_frame, text="앱 필터:", font=("맑은 고딕", 9)).pack(side=tk.LEFT)
+        tk.Label(filter_frame, text="🔍 파일명:", font=("맑은 고딕", 9)).pack(side=tk.LEFT)
+        self.search_var = tk.StringVar()
+        tk.Entry(filter_frame, textvariable=self.search_var, width=16, font=("맑은 고딕", 9)).pack(side=tk.LEFT, padx=(5, 12))
+
+        tk.Label(filter_frame, text="앱:", font=("맑은 고딕", 9)).pack(side=tk.LEFT)
         self.app_filter_var = tk.StringVar(value="전체")
-        self.app_filter_combo = ttk.Combobox(filter_frame, textvariable=self.app_filter_var, width=15, state="readonly", font=("맑은 고딕", 9))
-        self.app_filter_combo.pack(side=tk.LEFT, padx=(5, 15))
+        self.app_filter_combo = ttk.Combobox(filter_frame, textvariable=self.app_filter_var, width=13, state="readonly", font=("맑은 고딕", 9))
+        self.app_filter_combo.pack(side=tk.LEFT, padx=(5, 12))
 
         tk.Button(filter_frame, text="🔄 새로고침", command=self.load_logs, bg="#e3f2fd", font=("맑은 고딕", 9, "bold"), width=10).pack(side=tk.LEFT)
 
@@ -254,6 +259,10 @@ class LogViewerTab(tk.Frame):
             cur.close()
             conn.close()
 
+            # 날짜 필터 목록 갱신 (최신순)
+            dates = sorted(set(row[0].strftime("%Y-%m-%d") for row in rows), reverse=True)
+            self.date_filter_combo["values"] = ["전체"] + dates
+
             # 앱 필터 목록 갱신
             apps = sorted(set(row[2].get("app_exe", "unknown") for row in rows))
             self.app_filter_combo["values"] = ["전체"] + apps
@@ -261,6 +270,7 @@ class LogViewerTab(tk.Frame):
             # 필터 적용
             search_term = self.search_var.get().lower()
             app_filter = self.app_filter_var.get()
+            date_filter = self.date_filter_var.get()
 
             self.tree.delete(*self.tree.get_children())
             self.log_data.clear()
@@ -272,6 +282,8 @@ class LogViewerTab(tk.Frame):
                 app_exe = row[2].get("app_exe", "unknown")
                 window = row[2].get("window_title", "")
 
+                if date_filter != "전체" and not ts.startswith(date_filter):
+                    continue
                 if search_term and search_term not in filename.lower():
                     continue
                 if app_filter != "전체" and app_exe != app_filter:
