@@ -1,5 +1,10 @@
-# PostgreSQL 바이너리 및 데이터 (용량 큼, 별도 설치 필요)
-pgsql/
+# PostgreSQL 데이터 및 로그 (사용자별 생성, 용량 큼)
+pgsql/data/
+pgsql/logfile.log
+pgsql/pgAdmin 4/
+pgsql/StackBuilder/
+pgsql/doc/
+pgsql/include/
 
 # 환경 변수 (민감 정보)
 .env
