@@ -1,0 +1,15 @@
+{
+    "watch_paths": [
+        "C:\\Users\\Study\\Documents\\Claude\\Projects\\LogBase\\test"
+    ],
+    "allowed_apps": [
+        "chrome.exe",
+        "code.exe",
+        "winword.exe",
+        "powerpnt.exe",
+        "eclipse.exe",
+        "hwp.exe",
+        "firefox.exe",
+        "notepad.exe"
+    ]
+}
