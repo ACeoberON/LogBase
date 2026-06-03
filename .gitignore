@@ -1,5 +1,4 @@
-# PostgreSQL 데이터 및 로그 (사용자별 생성, 용량 큼)
-pgsql/data/
+# PostgreSQL 로그
 pgsql/logfile.log
 pgsql/pgAdmin 4/
 pgsql/StackBuilder/
